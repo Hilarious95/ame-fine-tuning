@@ -12,7 +12,7 @@ def run_command(command):
 
 def setup_miniconda_in_wsl():
     """ Execute the bash script within WSL to set up the environment """
-    bash_script_path = "/mnt/d/projects/matrix_finetune/setup/setup_miniconda.sh"
+    bash_script_path = "/mnt/d/dev/ame-finetune/setup/setup_miniconda.sh"
     run_command(f"wsl bash {bash_script_path}")
 
 if __name__ == "__main__":

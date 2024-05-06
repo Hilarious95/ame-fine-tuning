@@ -27,6 +27,6 @@ CD /D "%~dp0"
 set PATH=%PATH%;C:\Users\arman\miniconda3
 
 echo Starting NVIDIA CUDA installation...
-start /wait "" "D:\projects\matrix_finetune\resources\nvidia_cuda_12.4.1_windows_network.exe"
+start /wait "" "nvidia_cuda_12.4.1_windows_network.exe"
 echo NVIDIA CUDA installation complete.
 exit

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Ensure the script exits if any command fails
-set -e
+# set -e
 
 # Script Initialization
 echo "Starting setup..."
@@ -9,6 +9,8 @@ echo "Starting setup..."
 # Update and upgrade system packages
 echo "Updating system packages..."
 sudo apt update && sudo apt upgrade -y
+sudo apt-get install build-essential
+sudo apt install nvidia-cuda-toolkit
 
 # Download Miniconda for Python 3.10 explicitly
 echo "Downloading Miniconda..."
@@ -19,21 +21,23 @@ chmod +x ~/miniconda.sh
 
 # Install Miniconda
 echo "Installing Miniconda..."
-~/miniconda.sh -b -p $HOME/miniconda3
+~/miniconda.sh -b -p $HOME/miniconda3 -u
+
+# Create and activate new Conda environment
+echo "Creating and activating new Conda environment 'ame_ft_env'..."
+~/miniconda3/bin/conda create --name ame_ft_env python=3.10 -y
 
 # Set up Conda init to integrate with shell
 echo "Initializing Conda..."
 ~/miniconda3/bin/conda init
 source ~/.bashrc
-
-# Create and activate new Conda environment
-echo "Creating and activating new Conda environment 'ame_ft_env'..."
-~/miniconda3/bin/conda create --name ame_ft_env python=3.10 -y
-source ~/miniconda3/bin/activate ame_ft_env
+PATH="/opt/conda/bin:${PATH}"
+conda activate ame_ft_env
 
 # Install PyTorch, CUDA toolkit, and xformers
 echo "Installing PyTorch, CUDA toolkit, and xformers..."
-conda install pytorch cudatoolkit=12.1 xformers -c pytorch -c nvidia -c conda-forge
+conda install pytorch-cuda=12.1 pytorch cudatoolkit xformers -c pytorch -c nvidia -c xformers -y
+pip install torch
 
 # Check GPU architecture and install appropriate packages
 echo "Checking GPU architecture..."
