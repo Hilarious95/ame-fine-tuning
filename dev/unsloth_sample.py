@@ -89,12 +89,36 @@ trainer = SFTTrainer(
         seed=3407,
     ),
 )
-print("here-----")
+
+# Show current memory stats
+
+gpu_stats = torch.cuda.get_device_properties(0)
+start_gpu_memory = round(torch.cuda.max_memory_reserved() / 1024 / 1024 / 1024, 3)
+max_memory = round(gpu_stats.total_memory / 1024 / 1024 / 1024, 3)
+print(f"GPU = {gpu_stats.name}. Max memory = {max_memory} GB.")
+print(f"{start_gpu_memory} GB of memory reserved.")
+
 trainer.train()
+
+# alpaca_prompt = Copied from above
+FastLanguageModel.for_inference(model)  # Enable native 2x faster inference
+inputs = tokenizer(
+    [
+        alpaca_prompt.format(
+            "Continue the fibonnaci sequence.",  # instruction
+            "1, 1, 2, 3, 5, 8",  # input
+            "",  # output - leave this blank for generation!
+        )
+    ], return_tensors="pt").to("cuda")
+
+outputs = model.generate(**inputs, max_new_tokens=64, use_cache=True)
+tokenizer.batch_decode(outputs)
+
 # Save the trained model
 output_dir = "outputs"
 model.save_pretrained(output_dir)
 trainer.save_model(output_dir)
 trainer.model.save_pretrained(output_dir)
 tokenizer.save_pretrained(output_dir)
+
 print(f"Model and tokenizer saved to {output_dir}")

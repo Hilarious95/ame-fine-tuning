@@ -2058,6 +2058,6 @@
   ],
   "model_max_length": 8192,
   "pad_token": "<|reserved_special_token_250|>",
-  "padding_side": "right",
+  "padding_side": "left",
   "tokenizer_class": "PreTrainedTokenizerFast"
 }
