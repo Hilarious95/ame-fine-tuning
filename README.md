@@ -18,6 +18,6 @@ And then, with the dependencies installed, you can run the project with
 ```
 source setup/setup_miniconda.sh
 
-python dev/unsloth_sample.py 
+python3 dev/unsloth_sample.py 
 
 ```
