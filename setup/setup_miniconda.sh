@@ -37,31 +37,31 @@ conda activate ame_ft_env
 # Install PyTorch, CUDA toolkit, and xformers
 echo "Installing PyTorch, CUDA toolkit, and xformers..."
 conda install pytorch-cuda=12.1 pytorch cudatoolkit xformers -c pytorch -c nvidia -c xformers -y
-pip install torch
+pip3 install torch
 
 # Check GPU architecture and install appropriate packages
 echo "Checking GPU architecture..."
-python -c 'import torch; major, minor = torch.cuda.get_device_capability(); print(f"Major GPU version: {major}, Minor GPU version: {minor}"); version_flag = "new" if major >= 8 else "old"; exec(open("install_unsloth.py").read())'
+python3 -c 'import torch; major, minor = torch.cuda.get_device_capability(); print(f"Major GPU version: {major}, Minor GPU version: {minor}"); version_flag = "new" if major >= 8 else "old"; exec(open("install_unsloth.py").read())'
 
 # Save the following Python script as 'install_unsloth.py' in the same directory as this script
 # This Python script will handle conditional installation based on GPU version
 echo '''
 import os
-os.system("pip install 'unsloth[colab-new]@git+https://github.com/unslothai/unsloth.git'")
+os.system("pip3 install 'unsloth[colab-new]@git+https://github.com/unslothai/unsloth.git'")
 if version_flag == "new":
-    os.system("pip install --no-deps packaging ninja einops flash-attn xformers trl peft accelerate bitsandbytes")
+    os.system("pip3 install --no-deps packaging ninja einops flash-attn xformers trl peft accelerate bitsandbytes")
 else:
-    os.system("pip install --no-deps xformers trl peft accelerate bitsandbytes")
+    os.system("pip3 install --no-deps xformers trl peft accelerate bitsandbytes")
 ''' > install_unsloth.py
 
 # Install other Python packages without dependencies
 echo "Installing additional Python packages..."
-pip install --no-deps trl peft accelerate bitsandbytes
+pip3 install --no-deps trl peft accelerate bitsandbytes
 
 # Final setup verification
 echo "Verifying installation..."
 conda --version
-python -c 'import torch; print(torch.__version__)'
+python3 -c 'import torch; print(torch.__version__)'
 
 # Output to indicate successful setup
 echo "Setup completed successfully. Environment 'ame_ft_env' is ready for use."
